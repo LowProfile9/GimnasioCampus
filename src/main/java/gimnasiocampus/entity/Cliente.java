@@ -2,44 +2,51 @@ package gimnasiocampus.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "cliente")
 public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
+    @Column(name = "nombre", nullable = false)
     @NotBlank
-    @Column(nullable = false)
     private String nombre;
 
+    @Column(name = "documento", nullable = false, unique = true)
     @NotBlank
-    @Column(nullable = false, unique = true)
     private String documento;
 
-    @Column(nullable = false)
+    @Column(name = "activo", nullable = false)
     private boolean activo = true;
+
+    @Version
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long version;
 
     @ManyToMany
     @JoinTable(
-            name = "cliente_rutina",
-            joinColumns = @JoinColumn(name = "cliente_id"),
-            inverseJoinColumns = @JoinColumn(name = "rutina_id")
+        name = "cliente_rutina",
+        joinColumns = @JoinColumn(name = "cliente_id"),
+        inverseJoinColumns = @JoinColumn(name = "rutina_id")
     )
-    private Set<Rutina> rutinas = new HashSet<>();
+    @JsonIgnore
+    private List<Rutina> rutinas = new ArrayList<>();
 
     public Cliente() {
     }
 
-    public Cliente(String nombre, String documento, boolean activo) {
+    public Cliente(String nombre, String documento) {
         this.nombre = nombre;
         this.documento = documento;
-        this.activo = activo;
     }
 
     public Long getId() {
@@ -74,11 +81,12 @@ public class Cliente {
         this.activo = activo;
     }
 
-    public Set<Rutina> getRutinas() {
+    public List<Rutina> getRutinas() {
         return rutinas;
     }
 
-    public void setRutinas(Set<Rutina> rutinas) {
+    public void setRutinas(List<Rutina> rutinas) {
         this.rutinas = rutinas;
     }
+
 }

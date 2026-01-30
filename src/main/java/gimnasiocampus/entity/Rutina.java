@@ -2,28 +2,36 @@ package gimnasiocampus.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "rutinas")
+@Table(name = "rutina")
 public class Rutina {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
+    @Column(name = "nombre", nullable = false, unique = true)
     @NotBlank
-    @Column(nullable = false, unique = true)
     private String nombre;
 
+    @Column(name = "nivel", nullable = false)
     @NotBlank
-    @Column(nullable = false)
     private String nivel;
 
+    @Version
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long version;
+
     @ManyToMany(mappedBy = "rutinas")
-    private Set<Cliente> clientes = new HashSet<>();
+    @JsonIgnore
+    private List<Cliente> clientes = new ArrayList<>();
 
     public Rutina() {
     }
@@ -57,11 +65,13 @@ public class Rutina {
         this.nivel = nivel;
     }
 
-    public Set<Cliente> getClientes() {
+    public List<Cliente> getClientes() {
         return clientes;
     }
 
-    public void setClientes(Set<Cliente> clientes) {
+    public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
     }
+
+    
 }
