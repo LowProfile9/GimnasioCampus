@@ -22,6 +22,10 @@
 
 **Gimnasio Campus** es una API REST desarrollada en Spring Boot para gestionar clientes y rutinas de entrenamiento. El sistema utiliza JPA con MySQL, validaciones de datos y manejo de errores HTTP. Además, incluye documentación automática con Swagger UI.
 
+## Video de sustentacion del proyecto
+
+https://drive.google.com/file/d/1Kzjk3etQ0TabuBLC44Y0Si01EixXpw4l/view?usp=sharing
+
 ### Características principales:
 
 - **Gestión de Clientes**: CRUD completo con validación y control de duplicados
